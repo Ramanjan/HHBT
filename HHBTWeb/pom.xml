@@ -7,4 +7,14 @@
   </parent>
   <artifactId>HHBTWeb</artifactId>
   <packaging>war</packaging>
+  <dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>HHBTService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>hhbtWeb</finalName>
+	</build>
 </project>
