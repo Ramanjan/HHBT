@@ -6,4 +6,12 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>HHBTService</artifactId>
+  
+  <dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>HHBTPersistence</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>
