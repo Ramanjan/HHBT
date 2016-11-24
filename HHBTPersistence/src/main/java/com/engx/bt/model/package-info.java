@@ -1,4 +1,4 @@
 /**
  * @author rvaddi
  */
-package com.engx.bt.webinit;
+package com.engx.bt.model;

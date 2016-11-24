@@ -31,6 +31,13 @@ public class AuthenticateUserTo {
     private String userTokenId;
 
     /**
+     * @return the userEmailId
+     */
+    public final String getUserEmailId() {
+        return userEmailId;
+    }
+
+    /**
      * @return the userId
      */
     public final int getUserId() {
@@ -38,18 +45,17 @@ public class AuthenticateUserTo {
     }
 
     /**
-     * @param userId
-     *            the userId to set
+     * @return the userPassword
      */
-    public final void setUserId(final int userId) {
-        this.userId = userId;
+    public final String getUserPassword() {
+        return userPassword;
     }
 
     /**
-     * @return the userEmailId
+     * @return the userTokenId
      */
-    public final String getUserEmailId() {
-        return userEmailId;
+    public final String getUserTokenId() {
+        return userTokenId;
     }
 
     /**
@@ -61,10 +67,11 @@ public class AuthenticateUserTo {
     }
 
     /**
-     * @return the userPassword
+     * @param userId
+     *            the userId to set
      */
-    public final String getUserPassword() {
-        return userPassword;
+    public final void setUserId(final int userId) {
+        this.userId = userId;
     }
 
     /**
@@ -73,13 +80,6 @@ public class AuthenticateUserTo {
      */
     public final void setUserPassword(final String userPassword) {
         this.userPassword = userPassword;
-    }
-
-    /**
-     * @return the userTokenId
-     */
-    public final String getUserTokenId() {
-        return userTokenId;
     }
 
     /**

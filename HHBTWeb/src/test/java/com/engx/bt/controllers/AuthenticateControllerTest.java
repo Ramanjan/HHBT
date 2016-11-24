@@ -19,16 +19,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.engx.bt.common.HhbtCommonUtil;
 import com.engx.bt.common.HhbtServiceURI;
-import com.engx.bt.contollers.AuthenticateController;
-import com.engx.bt.service.UserService;
+import com.engx.bt.controllers.AuthenticateController;
+import com.engx.bt.exception.HhbtBaseException;
+import com.engx.bt.service.AuthenticateService;
 import com.engx.bt.transferobjects.AuthenticateUserTo;
 
 /**
- * Title : AuthenticateControllerTest.java.
- * Description :  This class contains test cases related 
- * to authenticate controller.
- * 
- * Copyright : ENGX-TechBullets (c) 2016 Company : EPAM Solutions.
+ * Title : AuthenticateControllerTest.java. Description : This class
+ * contains test cases related to authenticate controller. Copyright :
+ * ENGX-TechBullets (c) 2016 Company : EPAM Solutions.
  *
  * @author : rvaddi
  * @version : 0.1
@@ -39,10 +38,10 @@ import com.engx.bt.transferobjects.AuthenticateUserTo;
 public class AuthenticateControllerTest {
 
     /**
-     * {@link UserService}.
+     * {@link AuthenticateService}.
      */
     @Mock
-    private transient UserService userService;
+    private transient AuthenticateService authenticateService;
 
     /**
      * {@link AuthenticateController}.
@@ -51,11 +50,11 @@ public class AuthenticateControllerTest {
     private transient AuthenticateController authenticateController;
 
     /**
-     * 
+     *
      */
-    private transient HhbtCommonTestUtil hhbtCommonTestUtil 
-    = new HhbtCommonTestUtil();
-    
+    private transient HhbtCommonTestUtil hhbtCommonTestUtil =
+            new HhbtCommonTestUtil();
+
     /**
      * {@link MockMvc}.
      */
@@ -66,49 +65,43 @@ public class AuthenticateControllerTest {
      */
     private static final Logger LOGGER = LoggerFactory
             .getLogger(AuthenticateControllerTest.class);
-    /**
-     * This Method is to set up user controller object before all the test
-     * cases in this class execute.
-     */
-    @Before
-    public final void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(authenticateController).build();
-    }
 
     /**
      * TestCase 1: Authenticate User with valid credentials.sss
+     * 
+     * @throws HhbtBaseException
      */
     @Test
-    public final void authenticateUserWithValidCredentials() {
-        mockTheAuthenticateService(userService);
+    public final void authenticateUserWithValidCredentials()
+            throws HhbtBaseException {
+        mockTheAuthenticateService(authenticateService);
         performAuthentication();
     }
 
     /**
-     * This method will perform the authentication and valid the success.
+     * This method is used to get mock test data of user credentials for
+     * authentication.
+     *
+     * @return AuthenticateUserTo
      */
-    private final void performAuthentication() {
-        final AuthenticateUserTo authenticateRequestUserTo =
-                getAuthenticateTestData();
-        String strAuthenticateRequestUserTo =
-                HhbtCommonUtil.convertIntoJson(authenticateRequestUserTo);
-        ResultActions resultActions =
-                hhbtCommonTestUtil.performMockServiceCall(mockMvc,
-                        HhbtServiceURI.AUTHENTICATE,
-                        strAuthenticateRequestUserTo);
-        hhbtCommonTestUtil.checkValidResultStatus(resultActions);
+    private final AuthenticateUserTo getAuthenticateTestData() {
+        final AuthenticateUserTo authenticateUserTo =
+                new AuthenticateUserTo();
+        authenticateUserTo.setUserEmailId("Helping_Hands@TechBullets.com");
+        authenticateUserTo.setUserPassword("ASMMRB@TSG");
+        return authenticateUserTo;
     }
-
 
     /**
      * This method is used to mock the authenticate service method.
-     * 
+     *
      * @param userService
      *            userService
+     * @throws HhbtBaseException
      */
     private final void mockTheAuthenticateService(
-            UserService userService) {
+            final AuthenticateService userService)
+            throws HhbtBaseException {
         final AuthenticateUserTo authenticateResponseUserTo =
                 getAuthenticateTestData();
         setTokenAndUserIdToAuthenticateObject(authenticateResponseUserTo);
@@ -119,30 +112,43 @@ public class AuthenticateControllerTest {
     }
 
     /**
+     * This method will perform the authentication and valid the success.
+     */
+    private final void performAuthentication() {
+        final AuthenticateUserTo authenticateRequestUserTo =
+                getAuthenticateTestData();
+        final String strAuthenticateRequestUserTo =
+                HhbtCommonUtil.convertIntoJson(authenticateRequestUserTo);
+        final ResultActions resultActions =
+                hhbtCommonTestUtil.performMockServiceCall(mockMvc,
+                        HhbtServiceURI.AUTHENTICATE,
+                        strAuthenticateRequestUserTo);
+        hhbtCommonTestUtil.checkValidResultStatus(resultActions);
+    }
+
+    /**
      * This method is to set tokenId and UserId for authenticate object
      * which will be used as response object from service.
-     * 
+     *
      * @param authenticateUserTo
      *            authenticateUserTo
      */
     private final void setTokenAndUserIdToAuthenticateObject(
-            AuthenticateUserTo authenticateUserTo) {
+            final AuthenticateUserTo authenticateUserTo) {
         authenticateUserTo.setUserId(10);
         authenticateUserTo.setUserTokenId("ASJKHHJKAFHJASHJHJ:SHGH");
     }
 
     /**
-     * This method is used to get mock test data of user credentials for
-     * authentication.
-     * 
-     * @return AuthenticateUserTo
+     * This Method is to set up user controller object before all the test
+     * cases in this class execute.
      */
-    private final AuthenticateUserTo getAuthenticateTestData() {
-        final AuthenticateUserTo authenticateUserTo =
-                new AuthenticateUserTo();
-        authenticateUserTo.setUserEmailId("Helping_Hands@TechBullets.com");
-        authenticateUserTo.setUserPassword("ASMMRB@TSG");
-        return authenticateUserTo;
+    @Before
+    public final void setUp() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc =
+                MockMvcBuilders.standaloneSetup(authenticateController)
+                        .build();
     }
 
 }
